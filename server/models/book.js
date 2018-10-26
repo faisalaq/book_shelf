@@ -35,12 +35,12 @@ const bookSchema = mongoose.Schema({
     }
 }, {timestamps:true})
 
-bookSchema.pre('save', function(next){
-    var book = this
-    var ownerId = jwt.sign(book._id.toHexString(), config.SECRET)
-    book.ownerId = ownerId
-    next()
-})
+// bookSchema.pre('save', function(next){
+//     var book = this
+//     var ownerId = jwt.sign(book._id.toHexString(), config.SECRET)
+//     book.ownerId = ownerId
+//     next()
+// })
 
 const Book = mongoose.model('Book', bookSchema)
 
