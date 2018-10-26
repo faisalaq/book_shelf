@@ -3,12 +3,20 @@ import axios from 'axios'
 export function getBooks(
     limit = 10,
     start = 0,
-    order = 'asc'
+    order = 'asc',
+    list = ''
 ){
     // const request = `/api/books?limit=${limit}&skip=${start}&order=${order}`
     const request = axios.get(`/api/books?limit=${limit}&skip=${start}&order=${order}`)
-                    .then((response => response.data))
-    console.log(request)
+                    .then(response => {
+                        if(list){
+                            return [...list, ...response.data]
+                        }else{
+                            return response.data
+                        }
+                    }
+                )
+    // console.log(request)
 
     return {
         type:'GET_BOOKS',
