@@ -18,14 +18,24 @@ export default function(ComposedClass, reload){
             this.setState({
                 loading:false
             })
+
+            if(!nextProps.user.login.isAuth){
+                if(reload)
+                    this.props.history.push('/login')
+            }else{
+                if(reload === false){
+                    this.props.history.push('/user')
+                }
+            }
         }
 
         render(){
+            console.log(this.props)
             if(this.state.loading){
                 return <div className="loader">Loading...</div>
             }
             return (
-                <ComposedClass {...this.props} user=""/>
+                <ComposedClass {...this.props} user={this.props.user}/>
             )
         }
     }
