@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { addBook, clearNewBook } from '../../actions/index'
 
-class AddBook extends Component {
+class EditBook extends PureComponent {
 
     state = {
         formdata:{
+            _id:this.props.amtch.parms.id,
             name:'',
             author:'',
             review:'',
@@ -30,24 +30,6 @@ class AddBook extends Component {
     submitForm = (e)=>{
         e.preventDefault()
         // console.log(this.state.formdata)
-        this.props.dispatch(addBook({
-            ...this.state.formdata, 
-            ownerId:this.props.user.login.id
-        }))
-    }
-
-    showNewBook = (book) => (
-        book.post ?
-            <div className="conf_link">
-                  Book added! <Link to={`/books/${book.bookId}`}>
-                    Click the link to see post
-                  </Link>
-            </div>
-        :null
-    )
-
-    componentWillUnmount(){
-        this.props.dispatch(clearNewBook())
     }
 
     render() {
@@ -89,7 +71,7 @@ class AddBook extends Component {
                         />
                     </div>
 
-                    <div className="form_element"> Rating
+                    <div className="form_element">
                         <select
                             value={this.state.formdata.rating}
                             onChange={(event)=>this.handleInput(event,'rating')}
@@ -99,7 +81,7 @@ class AddBook extends Component {
                             <option val="3">3</option>
                             <option val="4">4</option>
                             <option val="5">5</option>
-                        </select> 
+                        </select>
                     </div>
 
                     <div className="form_element">
@@ -112,22 +94,11 @@ class AddBook extends Component {
                     </div>
                     
                     <button type="submit"> Add review </button>
-                    {
-                        this.props.books.newbook ?
-                            this.showNewBook(this.props.books.newbook)
-                        :null
-                    }
+
                 </form>
             </div>
         );
     }
 }
 
-function mapStateToProps(state){
-    console.log(state)
-    return {
-        books:state.books
-    }
-}
-
-export default connect(mapStateToProps)(AddBook)
+export default EditBook;
