@@ -16,7 +16,7 @@ class UserPosts extends Component {
                 <tr key={item._id}>
                     <td>
                         <Link to={
-                            `user/edit-post/${item._id}`
+                            `/user/edit-post/${item._id}`
                         }>{item.name}
                         </Link>
                     </td>

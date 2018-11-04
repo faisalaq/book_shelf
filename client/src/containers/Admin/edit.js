@@ -1,12 +1,14 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { getBook, updateBook, clearBook, deletePost } from '../../actions/index'
+
 
 class EditBook extends PureComponent {
 
     state = {
         formdata:{
-            _id:this.props.amtch.parms.id,
+            _id:this.props.match.params.id,
             name:'',
             author:'',
             review:'',
@@ -29,7 +31,29 @@ class EditBook extends PureComponent {
 
     submitForm = (e)=>{
         e.preventDefault()
-        // console.log(this.state.formdata)
+        
+        this.props.dispatch(updateBook(this.state.formdata))
+    }
+
+
+    componentWillMount(){
+        this.props.dispatch(getBook(this.props.match.params.id))
+    }
+
+    componentWillReceiveProps(nextProps){
+        let book = nextProps.books.book
+        this.setState({
+            formdata:{
+                _id:book._id,
+                name:book.name,
+                author:book.author,
+                review:book.review,
+                pages:book.pages,
+                rating:book.rating,
+                price:book.price
+                 
+            }
+        })
     }
 
     render() {
@@ -37,7 +61,7 @@ class EditBook extends PureComponent {
         return (
             <div className="rl_container_article">
                 <form onSubmit={this.submitForm}>
-                    <h2>Add a review</h2>
+                    <h2>Edit review</h2>
 
                     <div className="form_element">
                         <input 
@@ -71,7 +95,7 @@ class EditBook extends PureComponent {
                         />
                     </div>
 
-                    <div className="form_element">
+                    <div className="form_element"> Rating
                         <select
                             value={this.state.formdata.rating}
                             onChange={(event)=>this.handleInput(event,'rating')}
@@ -81,7 +105,7 @@ class EditBook extends PureComponent {
                             <option val="3">3</option>
                             <option val="4">4</option>
                             <option val="5">5</option>
-                        </select>
+                        </select> 
                     </div>
 
                     <div className="form_element">
@@ -93,12 +117,21 @@ class EditBook extends PureComponent {
                         />
                     </div>
                     
-                    <button type="submit"> Add review </button>
-
+                    <button type="submit"> Edit review </button>
+                    <div className="delete_post">
+                        <div className="button">Delete review</div>
+                    </div>
                 </form>
             </div>
         );
     }
 }
 
-export default EditBook;
+function mapStateToProps(state){
+    console.log(state)
+    return {
+        books:state.books
+    }
+}
+
+export default connect(mapStateToProps)(EditBook)
