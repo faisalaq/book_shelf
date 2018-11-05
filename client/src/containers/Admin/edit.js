@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getBook, updateBook, clearBook, deletePost } from '../../actions/index'
+import { getBook, updateBook, clearBook, deleteBook } from '../../actions/index'
 
 
 class EditBook extends PureComponent {
@@ -35,12 +35,22 @@ class EditBook extends PureComponent {
         this.props.dispatch(updateBook(this.state.formdata))
     }
 
+    deleteBook = ()=>{
+        this.props.dispatch(deleteBook(this.props.match.params.id))
+    }
+
+    redirectUser = ()=>{
+        setTimeout(()=>{
+            this.props.history.push('/user/user-reviews')
+        },1000)
+    }
 
     componentWillMount(){
         this.props.dispatch(getBook(this.props.match.params.id))
     }
 
     componentWillReceiveProps(nextProps){
+        console.log(nextProps)
         let book = nextProps.books.book
         this.setState({
             formdata:{
@@ -56,10 +66,34 @@ class EditBook extends PureComponent {
         })
     }
 
+    componentWillUnmount(){
+        this.props.dispatch(clearBook())
+    }
+
     render() {
+        let books = this.props.books
         console.log(this.props)
+
         return (
-            <div className="rl_container_article">
+            <div className="rl_container">
+                {
+                    books.updateBook ?
+                        <div className="edit_confirm">
+                            post updated, <Link to={`/books/${books.book._id}`}>
+                                Click here to see your post
+                            </Link>
+                        </div>
+                    :null
+                }
+
+                {
+                    books.postDeleted ?
+                        <div className="red_tag">
+                            Post Deleted
+                            {this.redirectUser()}
+                        </div>
+                    :null
+                }
                 <form onSubmit={this.submitForm}>
                     <h2>Edit review</h2>
 
@@ -119,7 +153,11 @@ class EditBook extends PureComponent {
                     
                     <button type="submit"> Edit review </button>
                     <div className="delete_post">
-                        <div className="button">Delete review</div>
+                        <div className="button" 
+                            onClick={this.deleteBook}
+                        >
+                            Delete review
+                        </div>
                     </div>
                 </form>
             </div>

@@ -211,7 +211,7 @@ header .navItem span {
     font-weight: 300;
     border-radius: 3px;
     border: none;
-    width: 80%;
+    width: 50%;
     box-sizing: border-box;
     display: inline-block;
 }
