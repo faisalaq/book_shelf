@@ -7,7 +7,7 @@ export function getBooks(
     list = ''
 ){
     // const request = `/api/books?limit=${limit}&skip=${start}&order=${order}`
-    const request = axios.get(`/api/books?limit=${limit}&skip=${start}&order=${order}`)
+    const request = axios.get(`/api/books?limit=${limit}&skip=${start}&order=${order}`) 
                     .then(response => {
                         if(list){
                             return [...list, ...response.data]
@@ -148,6 +148,16 @@ export function auth(){
 
     return {
         type:'USER_AUTH',
+        payload:request
+    }
+}
+
+export function getUsers(){
+    const request = axios.get('/api/users')
+                    .then(response => response.data)
+
+    return {
+        type:'GET_USER',
         payload:request
     }
 }
